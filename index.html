@@ -4,7 +4,15 @@
   <meta charset="utf-8" />
   <script>
     function setSearchEngine() {
+      let form = document.getElementById("searchForm"); // querySelector("#searchForm");
+
       let selectedRadio = document.querySelector("input[name=engine]:checked");
+      // Bonus Mission: check that a radio button is selected
+      if (selectedRadio === null) {
+        event.preventDefault();
+        alert("Invalid search engine selection");
+        return;
+      }
       let selectedSearchEngine = selectedRadio.value;
       let actions = {
         google: "https://www.google.com/search",
@@ -13,10 +21,24 @@
         ask: "https://www.ask.com/web",
       };
       let actionUrl = actions[selectedSearchEngine];
-      let form = document.getElementById("searchForm"); // querySelector("#searchForm");
+      // Bonus Mission: check that a radio button has a valid action
+      if (actionUrl === undefined) {
+        event.preventDefault();
+        alert("Invalid search engine selection");
+        return;
+      }
+
+      // Bonus Mission: check that a search term was entered in the textbox
+      let searchTerm = document.querySelector("input[name=q]").value;
+      if (searchTerm.trim() === "") {
+        event.preventDefault();
+        alert("Please enter a search term");
+        return;
+      }
+
       form.setAttribute("action", actionUrl);
     }
-    // TODO: create a handler
+
     window.addEventListener("load", function () {
       let form = document.getElementById("searchForm"); // querySelector("#searchForm");
       form.addEventListener("submit", setSearchEngine);
@@ -26,7 +48,6 @@
 
 <body>
   <form id="searchForm">
-    <!-- TODO: add form elements -->
     <input type="text" name="q" />
     <label>Google<input type="radio" name="engine" value="google" /></label>
     <label
@@ -35,6 +56,5 @@
     <label>Bing<input type="radio" name="engine" value="bing" /></label>
     <label>Ask<input type="radio" name="engine" value="ask" /></label>
     <button id="go">Go!</button>
-    <!-- <input type="submit" value="Go!"></input> -->
   </form>
 </body>
